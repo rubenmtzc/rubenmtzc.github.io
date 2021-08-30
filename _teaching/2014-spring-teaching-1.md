@@ -1,20 +1,20 @@
 ---
-title: "Teaching experience 1"
+title: "Advanced Microeconomics"
 collection: teaching
-type: "Undergraduate course"
+type: "Undergraduate"
 permalink: /teaching/2014-spring-teaching-1
-venue: "University 1, Department"
-date: 2014-01-01
-location: "City, Country"
+venue: "De Montfort University, Department of Economics and Marketing"
+date: 2021-10-01
+location: "Leicester, UK"
 ---
 
-This is a description of a teaching experience. You can use markdown like any other post.
+In this module we will cover recent developments in microeconomic theory, and some of their applications to contemporary markets and society.  The focus will be on strategic decision making, information asymmetries, market competition, economic networks, economic design, market efficiency and social welfare, and the digital economy. Both theoretical developments and their applications to the study of individual behaviour, the structure of markets. Institutions will be examined using recent advances in game theory, contract theory, mechanism design. The digital economy will be analysed from a microeconomic perspective
 
-Heading 1
+Syllabus
 ======
-
-Heading 2
+Lecture notes
 ======
-
-Heading 3
+Lecture presentations
+======
+Problem sets
 ======
