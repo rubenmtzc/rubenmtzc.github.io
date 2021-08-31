@@ -11,30 +11,26 @@ redirect_from:
 
 Education
 ======
-* B.S. in GitHub, GitHub University, 2012
-* M.S. in Jekyll, GitHub University, 2014
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
+* B.A. in Economics, Universidad Autónoma de Nuevo León
+* MA in Economics and Public Policy, Tecnológico de Monterrey
+* PhD in Economics, Univeristy of York
 
 Work experience
 ======
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* Jan 2017 to Sep 2019: Senior lecturer in Economics
+  * De Montfort University
+  * Duties included: Teaching and research
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Jan 2017 to Sep 2019: Lecturer in Economics (VC2020)
+  * De Montfort University
+  * Duties included: Teaching and research
   
-Skills
+Tech skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Office
+* LaTex
+* Stata
+* Python (Beginner)
 
 Publications
 ======
