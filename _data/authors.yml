@@ -2,10 +2,10 @@
 
 Name Name:
   name        : "Name Name"
-  uri         : "http://name.com"
+  uri         : "https://rubenmtzc.github.io/"
   email       : "name@name.com"
   bio         : "This is the first name."
-  avatar      : "bio-photo-2.jpg"
+  avatar      : "RMC-Pic.jpg"
   twitter     : "name"
   google_plus : "Name"
 
@@ -13,6 +13,6 @@ Name2 Name2:
   name        : "Name2 Name2"
   email       : "name2@name2.com"
   bio         : "I ordered what?"
-  avatar      : "bio-photo.jpg"
+  avatar      : "RMC-Pic.jpg"
   twitter     : "name2"
   google_plus : "Name"
