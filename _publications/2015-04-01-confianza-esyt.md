@@ -1,9 +1,10 @@
 ---
 title: "Confianza y Capital Social: Evidencia para México. With Edgardo Ayala Gaytan and Ernesto Aguayo Tellez."
 collection: publications
-permalink: /publication/2009-10-01-paper-title-number-1
+permalink: /publication/2015-04-01-confianza-esyt.md
+#permalink: /publication/2009-10-01-paper-title-number-1
 excerpt: 'This paper is about the number 1. The number 2 is left for future work.'
-date: 2009-10-01
+date: 2015-04-01
 venue: 'Journal 1'
 paperurl: 'http://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-84212015000100003&lng=es&nrm=iso'
 citation: 'Martínez-Cárdenas, Rubén, Ayala-Gaytán, Edgardo Arturo, & Aguayo-Téllez, Ernesto. (2015). Confianza y capital social: evidencia para México. Economía, sociedad y territorio, 15(47), 35-59.'
