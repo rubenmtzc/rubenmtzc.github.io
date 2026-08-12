@@ -75,6 +75,24 @@ social:
     - "rubenmtzc/rubenmtzc.github.io"
     - "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
+{% if author.personal_webpage %}
+  <li>
+    <a href="{{ author.personal_webpage }}" target="_blank" rel="noopener">
+      <i class="fas fa-fw fa-globe" aria-hidden="true"></i>
+      Personal Webpage
+    </a>
+  </li>
+{% endif %}
+
+{% if author.work_webpage %}
+  <li>
+    <a href="{{ author.work_webpage }}" target="_blank" rel="noopener">
+      <i class="fas fa-fw fa-building" aria-hidden="true"></i>
+      Work Webpage
+    </a>
+  </li>
+{% endif %}
+
 # Analytics
 analytics:
   provider               :  "google-universal" # false (default), "google", "google-universal", "custom"
@@ -119,8 +137,8 @@ author:
   xing             :
   youtube          :
   wikipedia        :
-  personal webpage : "https://rubenmtzc.netlify.app/"
-  work webpage     : "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
+  personal_webpage: "https://rubenmtzc.netlify.app/"
+  work_webpage: "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
 
 # Reading Files
