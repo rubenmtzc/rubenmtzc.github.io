@@ -12,8 +12,8 @@ In this module we will cover recent developments in microeconomic theory, and so
 
 [Syllabus](https://docs.google.com/document/d/1peS5tXCU0TvqNDABc0JVoSIpFj6VbmQO/edit?usp=sharing&ouid=100140232644665862686&rtpof=true&sd=true)
 
-[Lecture notes]
+#[Lecture notes]
 
-[Lecture presentations]
+#[Lecture presentations]
 
-[Problem sets]
+#[Problem sets]
