@@ -75,23 +75,6 @@ social:
     - "rubenmtzc/rubenmtzc.github.io"
     - "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
-{% if author.personal_webpage %}
-  <li>
-    <a href="{{ author.personal_webpage }}" target="_blank" rel="noopener">
-      <i class="fas fa-fw fa-globe" aria-hidden="true"></i>
-      Personal Webpage
-    </a>
-  </li>
-{% endif %}
-
-{% if author.work_webpage %}
-  <li>
-    <a href="{{ author.work_webpage }}" target="_blank" rel="noopener">
-      <i class="fas fa-fw fa-building" aria-hidden="true"></i>
-      Work Webpage
-    </a>
-  </li>
-{% endif %}
 
 # Analytics
 analytics:
@@ -107,36 +90,36 @@ author:
   bio              : "Hi I’m a lecutrer in economics at the University of York. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics."
   location         : "UK"
   employer         : "University of York"
-  pubmed           : 
-  googlescholar    : 
-  email            :
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
-  uri              :
-  bitbucket        :
-  codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
-  foursquare       :
+  #pubmed           : 
+  #googlescholar    : 
+  #email            :
+  #researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+  #uri              :
+  #bitbucket        :
+  #codepen          :
+  #dribbble         :
+  #flickr           :
+  #facebook         :
+  #foursquare       :
   github           : "rubenmtzc/rubenmtzc.github.io"
-  google_plus      :
-  keybase          :
-  instagram        :
-  impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
-  lastfm           :
+  #google_plus      :
+  #keybase          :
+  #instagram        :
+  #impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
+  #lastfm           :
   linkedin         : "https://www.linkedin.com/in/rubenmtzc/"
-  orcid            : #"http://orcid.org/yourorcidurl"
-  pinterest        :
-  soundcloud       :
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
-  steam            :
-  tumblr           :
-  twitter          : 
-  vine             :
-  weibo            :
-  xing             :
-  youtube          :
-  wikipedia        :
+  #orcid            : #"http://orcid.org/yourorcidurl"
+  #pinterest        :
+  #soundcloud       :
+  #stackoverflow    : # http://stackoverflow.com/users/123456/username
+  #steam            :
+  #tumblr           :
+  #twitter          : 
+  #vine             :
+  #weibo            :
+  #xing             :
+  #youtube          :
+  #wikipedia        :
   personal_webpage: "https://rubenmtzc.netlify.app/"
   work_webpage: "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
