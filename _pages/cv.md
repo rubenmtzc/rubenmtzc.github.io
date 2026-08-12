@@ -1,8 +1,13 @@
-layout: archivetitle: "Curriculum Vitae"permalink: /cv/author_profile: trueredirect_from:
+---
+layout: archive
+title: "Curriculum Vitae"
+permalink: /cv/
+author_profile: true
+redirect_from:
+  - /resume
+---
 
-/resume
-
-Download CV as PDF{: .btn .btn--primary }
+Download CV as PDF(https://drive.google.com/file/d/1u5s2hKByM9NnPk6SCPb2rOWLFjXTQUjx/view?usp=sharing){: .btn .btn--primary }
 
 Current position
 
