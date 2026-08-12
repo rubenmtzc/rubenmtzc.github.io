@@ -11,7 +11,9 @@ redirect_from:
 
 Current position
 
-Lecturer in EconomicsDepartment of Economics and Related StudiesUniversity of YorkSince August 2023
+Lecturer in Economics 
+Department of Economics and Related Studies, University of York 
+Since August 2023
 
 Education
 
