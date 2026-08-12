@@ -72,7 +72,7 @@ social:
   name: "Rubén Martínez Cárdenas"
   links:
     - "https://www.linkedin.com/in/rubenmtzc/"
-    - "https://rubenmtzc.netlify.app/"
+    - "rubenmtzc/rubenmtzc.github.io"
     - "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
 # Analytics
@@ -100,13 +100,13 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "https://rubenmtzc.netlify.app/"
+  github           : "rubenmtzc/rubenmtzc.github.io"
   google_plus      :
   keybase          :
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : #"https://www.linkedin.com/in/rubenmtzc/"
+  linkedin         : "https://www.linkedin.com/in/rubenmtzc/"
   orcid            : #"http://orcid.org/yourorcidurl"
   pinterest        :
   soundcloud       :
@@ -119,6 +119,8 @@ author:
   xing             :
   youtube          :
   wikipedia        :
+  personal webpage : "https://rubenmtzc.netlify.app/"
+  work webpage     : "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
 
 # Reading Files
