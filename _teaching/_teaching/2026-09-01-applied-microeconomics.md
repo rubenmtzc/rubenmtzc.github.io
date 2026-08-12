@@ -4,6 +4,7 @@ collection: teaching
 type: "Undergraduate module"
 permalink: /teaching/applied-microeconomics/
 venue: "University of York"
+date: 2026-10-01
 location: "York, UK"
 author_profile: true
 ---
