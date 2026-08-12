@@ -10,7 +10,7 @@ locale                   : "en-GB"
 title                    : "Ruben's Webpage"
 title_separator          : "-"
 name                     : &name "Rubén Martínez Cárdenas"
-description              : &description "Senior Lecturer in Economics"
+description              : &description "Lecturer in Economics"
 url                      : https://rubenmtzc.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "rubenmtzc/rubenmtzc.github.io"
@@ -56,20 +56,24 @@ alexa_site_verification  :
 yandex_site_verification :
 
 # Social Sharing
-twitter: 
-  username               : &twitter
-facebook:
-  username               :
-  app_id                 :
-  publisher              :
-og_image                 :  # Open Graph/Twitter default site image
-# For specifying social profiles
-# - https://developers.google.com/structured-data/customize/social-profiles
-social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+twitter:
+  username:
 
+facebook:
+  username:
+  app_id:
+  publisher:
+
+og_image:  # Open Graph default site image
+
+# Social profiles used in structured metadata
+social:
+  type: Person
+  name: "Rubén Martínez Cárdenas"
+  links:
+    - "https://www.linkedin.com/in/rubenmtzc/"
+    - "https://rubenmtzc.netlify.app/"
+    - "https://www.york.ac.uk/economics/people/mart%C3%ADnez-c%C3%A1rdenas-rub%C3%A9n/"
 
 # Analytics
 analytics:
@@ -82,9 +86,9 @@ analytics:
 author:
   name             : "Rubén Martínez Cárdenas"
   avatar           : "profile.png"
-  bio              : "Hi I’m a senior lecutrer in economics at De Montfort University. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics."
+  bio              : "Hi I’m a lecutrer in economics at the University of York. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics."
   location         : "UK"
-  employer         : "De Montfort University"
+  employer         : "University of York"
   pubmed           : 
   googlescholar    : 
   email            :
@@ -96,7 +100,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "https://github.com/rubenmtzc"
+  github           : "https://rubenmtzc.netlify.app/"
   google_plus      :
   keybase          :
   instagram        :
@@ -109,7 +113,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "runomics"
+  twitter          : 
   vine             :
   weibo            :
   xing             :
