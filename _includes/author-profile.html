@@ -118,6 +118,23 @@
       {% if author.wikipedia %}
         <li><a href="https://en.wikipedia.org/wiki/User:{{ author.wikipedia }}"><i class="fab fa-fw fa-wikipedia-w" aria-hidden="true"></i> Wikipedia</a></li>
 {% endif %}
+      {% if author.personal_webpage %}
+  <li>
+    <a href="{{ author.personal_webpage }}" target="_blank" rel="noopener">
+      <i class="fas fa-fw fa-globe" aria-hidden="true"></i>
+      Personal Webpage
+    </a>
+  </li>
+{% endif %}
+
+{% if author.work_webpage %}
+  <li>
+    <a href="{{ author.work_webpage }}" target="_blank" rel="noopener">
+      <i class="fas fa-fw fa-building" aria-hidden="true"></i>
+      Work Webpage
+    </a>
+  </li>
+{% endif %}
     </ul>
   </div>
 </div>
