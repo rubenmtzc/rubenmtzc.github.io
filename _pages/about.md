@@ -104,7 +104,6 @@ redirect_from:
 
 Hi, I’m a lecturer in economics at the **University of York**. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics.
 
-You can also find me on [Mastodon](YOUR_MASTODON_URL).
 
 </div>
 
