@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-Download CV as PDF(https://drive.google.com/file/d/1u5s2hKByM9NnPk6SCPb2rOWLFjXTQUjx/view?usp=sharing){: .btn .btn--primary }
+[Download CV as PDF](https://drive.google.com/file/d/1u5s2hKByM9NnPk6SCPb2rOWLFjXTQUjx/view?usp=sharing){: .btn .btn--primary }
 
 Current position
 
