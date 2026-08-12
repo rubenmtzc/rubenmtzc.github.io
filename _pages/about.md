@@ -102,7 +102,7 @@ redirect_from:
 
 <div class="bio-intro">
 
-Hi, I’m a lecturer in economics at the **University of York**. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics.
+Hi, I’m a lecturer in economics at the <strong>University of York</strong>. My research interests include the digital economy, economic design, financial intermediation, and a little bit of macroeconomics.
 
 
 </div>
@@ -122,7 +122,7 @@ Hi, I’m a lecturer in economics at the **University of York**. My research int
 
 <div class="bio-card">
 
-## Interests
+<h2>Interests</h2>
 
 <ul class="bio-interests">
   <li>Microeconomics</li>
@@ -138,7 +138,7 @@ Hi, I’m a lecturer in economics at the **University of York**. My research int
 
 <div class="bio-card">
 
-## Education
+<h2>Education</h2>
 
 <div class="education-item">
   <div class="education-icon">
