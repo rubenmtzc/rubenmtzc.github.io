@@ -168,8 +168,11 @@ A detailed programme for <strong>Applied Microeconomics</strong>, including the 
         <p>In week 1 we will start our coverage of consumer theory. We will first introduce the concept of preferences followed by the axiomatic definition of rational preferences. In a second step, we will define rational choices. This concept is important as choices are what we can observe, and this data can help us identify what are the preferences of the individuals. After these two steps we will introduce a key concept in economic theory: individual utility. Although it is a fictitious device, the utility concept is extremely useful to derive theoretical demand functions, and to support estimation methods for demands using data.Ok all that is very nice but we haven't talked about scarcity. Well, it turns out that we cannot always get what we want or in the quantities we want of it. Either because there is a limited number or because we have limited income or wealth, we need to restrict ourselves to what is available to us. To model this we introduce the budget set and the budget constraint, which will represent how much of any good or combination of goods a consumer can acquire given the resources available to them.We will probably stop here this week. After this week, we will be ready for the next set of topics in week 2. We will start with the constrained optimisation problem of the consumer, and other interesting topics.</p>
         <h3>Readings</h3>
         <ul>
-            <li>Chapters 2 and 4 of Serrano, R. (2018). A short course in intermediate microeconomics with calculus (A. Feldman, Ed.; Second edition.). Cambridge University Press.</li>
-            <li>Chapters 1 and 5 of Osborne, M., & Rubinstein, A. (2023). Models in Microeconomic Theory: Expanded Second Edition. Open Book Publishers. (Optional: Section 2.4 on satisficing).</li>
+            <li>For this week, read Chapters 2 and 4 of Serrano, R. and A. Feldman (2018). A short course in intermediate microeconomics with calculus, Cambridge University Press. Those two chapters are a very good introduction to the topic. You can find a more advanced coverage in Chapters 1 and 5 of Osborne, M., & Rubinstein, A. (2023). Models in Microeconomic Theory: Expanded Second Edition (She). Open Book Publishers. You may be interested in reading section 2.4 on satisficing as well, but this is not strictly needed for this module. These chapters are more or less at the same level of the material we will cover in the module.
+
+The lecture notes provided offer a summary of the topics covered. But remember that they are work in progress and should be used at your own discretion (or should I say at your own risk?).
+
+Enjoy!</li>
         </ul>
     </div>
 
