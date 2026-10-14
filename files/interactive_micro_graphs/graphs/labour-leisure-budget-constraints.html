@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive Labour–Leisure Budget Constraints</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#1f2937;
+      --muted:#5f6b7a;
+      --grid:#d9dee7;
+      --axis:#25364d;
+      --bc1:#237a57;
+      --bc2:#173b73;
+      --bundle:#9a4f12;
+      --panel:#f7f9fc;
+      --border:#cfd6e1;
+      --focus:#7c3aed;
+      --selected:#111827;
+      --tooltip:#111827;
+      --tooltip-text:#ffffff;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      padding:24px;
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+
+    .container{
+      max-width:1180px;
+      margin:0 auto;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(1.55rem, 2.8vw, 2.25rem);
+      color:#17324f;
+    }
+
+    .intro{
+      margin:0 0 18px;
+      color:var(--muted);
+      max-width:86ch;
+    }
+
+    .control-panel{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:14px;
+      margin-bottom:16px;
+    }
+
+    .control-group{
+      border:1px solid var(--border);
+      background:var(--panel);
+      border-radius:10px;
+      padding:12px;
+    }
+
+    .control-group h2{
+      font-size:1rem;
+      margin:0 0 10px;
+      color:#17324f;
+    }
+
+    .button-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    button{
+      min-height:44px;
+      padding:9px 13px;
+      border:2px solid var(--axis);
+      border-radius:8px;
+      background:#fff;
+      color:var(--axis);
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    button:hover{ background:#eef3f8; }
+
+    button[aria-pressed="false"]{
+      opacity:.6;
+      border-style:dashed;
+    }
+
+    button:focus-visible,
+    [tabindex="0"]:focus-visible{
+      outline:3px solid var(--focus);
+      outline-offset:3px;
+    }
+
+    .chart-wrap{
+      position:relative;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:#fff;
+      padding:10px;
+      overflow-x:auto;
+    }
+
+    svg{
+      display:block;
+      width:100%;
+      min-width:760px;
+      height:auto;
+    }
+
+    .grid-line{ stroke:var(--grid); stroke-width:1; }
+    .axis-line{ stroke:var(--axis); stroke-width:2.2; }
+    .tick{ stroke:var(--axis); stroke-width:1.4; }
+
+    .tick-label,
+    .axis-label,
+    .line-label,
+    .bundle-label,
+    .coord-label{
+      font-family:Arial, Helvetica, sans-serif;
+      fill:var(--text);
+    }
+
+    .tick-label{ font-size:15px; }
+    .axis-label{ font-size:18px; font-weight:700; }
+
+    .budget-line{
+      fill:none;
+      stroke-width:4;
+      stroke-linecap:round;
+      cursor:pointer;
+      transition:stroke-width .15s ease, opacity .15s ease;
+    }
+
+    .budget-hit{
+      fill:none;
+      stroke:transparent;
+      stroke-width:18;
+      cursor:pointer;
+      pointer-events:stroke;
+    }
+
+    .bc1{ stroke:var(--bc1); }
+    .bc2{ stroke:var(--bc2); }
+
+    .line-label{
+      font-size:16px;
+      font-weight:700;
+      pointer-events:none;
+    }
+
+    .bundle{
+      fill:var(--bundle);
+      stroke:#fff;
+      stroke-width:3;
+      cursor:pointer;
+      transition:r .15s ease, stroke-width .15s ease;
+    }
+
+    .bundle-label{
+      font-size:15px;
+      font-weight:700;
+      paint-order:stroke;
+      stroke:#fff;
+      stroke-width:4px;
+      stroke-linejoin:round;
+      pointer-events:none;
+    }
+
+    .coord-point{
+      fill:#fff;
+      stroke-width:2.4;
+      opacity:0;
+      pointer-events:auto;
+      cursor:crosshair;
+      transition:opacity .12s ease;
+    }
+
+    .coord-point.bc1-point{ stroke:var(--bc1); }
+    .coord-point.bc2-point{ stroke:var(--bc2); }
+
+    .line-group:hover .coord-point,
+    .line-group.selected .coord-point{
+      opacity:1;
+    }
+
+    .selected .budget-line{
+      stroke-width:7;
+    }
+
+    .selected.bundle-group .bundle{
+      r:13;
+      stroke:var(--selected);
+      stroke-width:4;
+    }
+
+    .hidden{ display:none !important; }
+
+    .tooltip{
+      position:fixed;
+      z-index:9999;
+      min-width:170px;
+      max-width:min(280px, calc(100vw - 24px));
+      padding:8px 10px;
+      border-radius:8px;
+      background:var(--tooltip);
+      color:var(--tooltip-text);
+      font-size:.9rem;
+      line-height:1.35;
+      pointer-events:none;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+      overflow-wrap:anywhere;
+    }
+
+    .tooltip[hidden]{ display:none; }
+
+    .details{
+      margin-top:14px;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:var(--panel);
+      min-height:58px;
+    }
+
+    .details strong{ color:#17324f; }
+
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      margin-top:12px;
+      font-size:.95rem;
+    }
+
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .swatch{
+      width:24px;
+      height:4px;
+      display:inline-block;
+      border-radius:99px;
+    }
+
+    .swatch.bc1{ background:var(--bc1); }
+    .swatch.bc2{ background:var(--bc2); }
+
+    .dot{
+      width:13px;
+      height:13px;
+      border-radius:50%;
+      background:var(--bundle);
+      display:inline-block;
+    }
+
+    .bundle-key{
+      margin-top:18px;
+      padding:16px 18px;
+      border-radius:10px;
+      background:var(--panel);
+      border:1px solid var(--border);
+    }
+
+    .bundle-key h2{
+      margin:0 0 10px;
+      font-size:1.15rem;
+    }
+
+    .bundle-key ul{
+      margin:0;
+      padding-left:1.25rem;
+      columns:2;
+      column-gap:32px;
+    }
+
+    .bundle-key li{
+      margin:0 0 7px;
+      break-inside:avoid;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media (max-width:760px){
+      body{padding:14px}
+      .bundle-key ul{columns:1}
+    }
+
+    @media print{
+      .control-panel{display:none}
+      .chart-wrap{border:0;padding:0}
+      .tooltip{display:none !important}
+    }
+  </style>
+</head>
+<body>
+<main class="container">
+  <h1>Leisure and consumption after a wage increase</h1>
+  <p class="intro">
+    Hover over either budget line to reveal its hourly coordinates. Hover over a coordinate point to see
+    the leisure–consumption bundle. The tooltip automatically switches sides near the edge of the screen,
+    so the full coordinate remains visible. Click a line or bundle to select it and display its details.
+    The visibility of every line and every bundle can also be controlled independently below.
+  </p>
+
+  <section class="control-panel" aria-label="Graph controls">
+    <div class="control-group">
+      <h2>Budget lines</h2>
+      <div class="button-row">
+        <button type="button" data-toggle="bc1Group" aria-pressed="true">£10/hour line</button>
+        <button type="button" data-toggle="bc2Group" aria-pressed="true">£20/hour line</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <h2>Bundles</h2>
+      <div class="button-row">
+        <button type="button" data-toggle="bundleA" aria-pressed="true">A</button>
+        <button type="button" data-toggle="bundleB" aria-pressed="true">B</button>
+        <button type="button" data-toggle="bundleC" aria-pressed="true">C</button>
+        <button type="button" data-toggle="bundleD" aria-pressed="true">D</button>
+        <button type="button" data-toggle="bundleE" aria-pressed="true">E</button>
+        <button type="button" data-toggle="bundleF" aria-pressed="true">F</button>
+      </div>
+    </div>
+  </section>
+
+  <p id="status" class="sr-only" aria-live="polite"></p>
+
+  <div class="chart-wrap" id="chartWrap">
+    <div class="tooltip" id="tooltip" role="status" hidden></div>
+
+    <svg id="graph" viewBox="0 0 960 610" role="img"
+         aria-label="Interactive budget constraints for leisure and consumption"
+         aria-describedby="graphDesc">
+      <desc id="graphDesc">
+        Leisure is measured from 0 to 16 hours on the horizontal axis and consumption from 0 to
+        360 pounds on the vertical axis. Two budget lines represent wages of 10 and 20 pounds per hour.
+        Hovering over a line reveals coordinate points for each whole hour of leisure. Six labelled
+        bundles are also shown and can be selected individually.
+      </desc>
+
+      <!-- Plot area: left=100, right=900, top=40, bottom=520.
+           x scale = 50 px/hour.
+           y scale = 480/360 = 1.333333 px/£. -->
+
+      <g aria-hidden="true">
+        <line class="grid-line" x1="100" y1="520" x2="900" y2="520"/>
+        <line class="grid-line" x1="100" y1="440" x2="900" y2="440"/>
+        <line class="grid-line" x1="100" y1="360" x2="900" y2="360"/>
+        <line class="grid-line" x1="100" y1="280" x2="900" y2="280"/>
+        <line class="grid-line" x1="100" y1="200" x2="900" y2="200"/>
+        <line class="grid-line" x1="100" y1="120" x2="900" y2="120"/>
+        <line class="grid-line" x1="100" y1="40" x2="900" y2="40"/>
+
+        <line class="grid-line" x1="100" y1="40" x2="100" y2="520"/>
+        <line class="grid-line" x1="300" y1="40" x2="300" y2="520"/>
+        <line class="grid-line" x1="500" y1="40" x2="500" y2="520"/>
+        <line class="grid-line" x1="700" y1="40" x2="700" y2="520"/>
+        <line class="grid-line" x1="900" y1="40" x2="900" y2="520"/>
+      </g>
+
+      <line class="axis-line" x1="100" y1="520" x2="915" y2="520"/>
+      <line class="axis-line" x1="100" y1="530" x2="100" y2="28"/>
+      <polygon points="915,520 902,513 902,527" fill="var(--axis)"/>
+      <polygon points="100,28 93,41 107,41" fill="var(--axis)"/>
+
+      <g>
+        <line class="tick" x1="100" y1="520" x2="100" y2="529"/>
+        <line class="tick" x1="300" y1="520" x2="300" y2="529"/>
+        <line class="tick" x1="500" y1="520" x2="500" y2="529"/>
+        <line class="tick" x1="700" y1="520" x2="700" y2="529"/>
+        <line class="tick" x1="900" y1="520" x2="900" y2="529"/>
+
+        <text class="tick-label" x="100" y="550" text-anchor="middle">0</text>
+        <text class="tick-label" x="300" y="550" text-anchor="middle">4</text>
+        <text class="tick-label" x="500" y="550" text-anchor="middle">8</text>
+        <text class="tick-label" x="700" y="550" text-anchor="middle">12</text>
+        <text class="tick-label" x="900" y="550" text-anchor="middle">16</text>
+      </g>
+
+      <g>
+        <line class="tick" x1="91" y1="520" x2="100" y2="520"/>
+        <line class="tick" x1="91" y1="440" x2="100" y2="440"/>
+        <line class="tick" x1="91" y1="360" x2="100" y2="360"/>
+        <line class="tick" x1="91" y1="280" x2="100" y2="280"/>
+        <line class="tick" x1="91" y1="200" x2="100" y2="200"/>
+        <line class="tick" x1="91" y1="120" x2="100" y2="120"/>
+        <line class="tick" x1="91" y1="40" x2="100" y2="40"/>
+
+        <text class="tick-label" x="80" y="525" text-anchor="end">£0</text>
+        <text class="tick-label" x="80" y="445" text-anchor="end">£60</text>
+        <text class="tick-label" x="80" y="365" text-anchor="end">£120</text>
+        <text class="tick-label" x="80" y="285" text-anchor="end">£180</text>
+        <text class="tick-label" x="80" y="205" text-anchor="end">£240</text>
+        <text class="tick-label" x="80" y="125" text-anchor="end">£300</text>
+        <text class="tick-label" x="80" y="45" text-anchor="end">£360</text>
+      </g>
+
+      <text class="axis-label" x="505" y="592" text-anchor="middle">Leisure (hours)</text>
+      <text class="axis-label" x="24" y="280" text-anchor="middle"
+            transform="rotate(-90 24 280)">Consumption (£)</text>
+
+      <!-- £10/hour line -->
+      <g id="bc1Group" class="line-group" data-kind="line"
+         data-title="£10/hour budget line"
+         data-details="C = 160 − 10L. Each additional hour of leisure reduces feasible consumption by £10."
+         tabindex="0" role="button" aria-label="£10 per hour budget line. Click to select.">
+        <line class="budget-line bc1" x1="100" y1="306.667" x2="900" y2="520"/>
+        <line class="budget-hit" x1="100" y1="306.667" x2="900" y2="520"/>
+        <text class="line-label" x="220" y="388" fill="var(--bc1)">£10/hour budget line</text>
+        <g class="coords" aria-hidden="true">
+          <!-- generated by script -->
+        </g>
+      </g>
+
+      <!-- £20/hour line -->
+      <g id="bc2Group" class="line-group" data-kind="line"
+         data-title="£20/hour budget line"
+         data-details="C = 320 − 20L. Each additional hour of leisure reduces feasible consumption by £20."
+         tabindex="0" role="button" aria-label="£20 per hour budget line. Click to select.">
+        <line class="budget-line bc2" x1="100" y1="93.333" x2="900" y2="520"/>
+        <line class="budget-hit" x1="100" y1="93.333" x2="900" y2="520"/>
+        <text class="line-label" x="330" y="132" fill="var(--bc2)">£20/hour budget line</text>
+        <g class="coords" aria-hidden="true">
+          <!-- generated by script -->
+        </g>
+      </g>
+
+      <!-- Bundles -->
+      <g id="bundleA" class="bundle-group" data-kind="bundle"
+         data-title="Bundle A" data-details="A = (8 hours leisure, £80 consumption). This bundle lies on the £10/hour budget line."
+         tabindex="0" role="button" aria-label="Bundle A: 8 hours leisure and 80 pounds consumption. Click to select.">
+        <circle class="bundle" cx="500" cy="413.333" r="9"/>
+        <text class="bundle-label" x="516" y="402">A (8, £80)</text>
+      </g>
+
+      <g id="bundleB" class="bundle-group" data-kind="bundle"
+         data-title="Bundle B" data-details="B = (8 hours leisure, £160 consumption). This bundle lies on the £20/hour budget line."
+         tabindex="0" role="button" aria-label="Bundle B: 8 hours leisure and 160 pounds consumption. Click to select.">
+        <circle class="bundle" cx="500" cy="306.667" r="9"/>
+        <text class="bundle-label" x="516" y="295">B (8, £160)</text>
+      </g>
+
+      <g id="bundleC" class="bundle-group" data-kind="bundle"
+         data-title="Bundle C" data-details="C = (5 hours leisure, £70 consumption). It lies below the £10/hour budget line and is affordable at both wages."
+         tabindex="0" role="button" aria-label="Bundle C: 5 hours leisure and 70 pounds consumption. Click to select.">
+        <circle class="bundle" cx="350" cy="426.667" r="9"/>
+        <text class="bundle-label" x="366" y="449">C (5, £70)</text>
+      </g>
+
+      <g id="bundleD" class="bundle-group" data-kind="bundle"
+         data-title="Bundle D" data-details="D = (10 hours leisure, £100 consumption). It lies below the £20/hour budget line."
+         tabindex="0" role="button" aria-label="Bundle D: 10 hours leisure and 100 pounds consumption. Click to select.">
+        <circle class="bundle" cx="600" cy="386.667" r="9"/>
+        <text class="bundle-label" x="628" y="364">D (10, £100)</text>
+      </g>
+
+      <g id="bundleE" class="bundle-group" data-kind="bundle"
+         data-title="Bundle E" data-details="E = (4 hours leisure, £180 consumption). It lies between the two budget lines: unaffordable at £10/hour but affordable at £20/hour."
+         tabindex="0" role="button" aria-label="Bundle E: 4 hours leisure and 180 pounds consumption. Click to select.">
+        <circle class="bundle" cx="300" cy="280" r="9"/>
+        <text class="bundle-label" x="316" y="269">E (4, £180)</text>
+      </g>
+
+      <g id="bundleF" class="bundle-group" data-kind="bundle"
+         data-title="Bundle F" data-details="F = (6 hours leisure, £260 consumption). It lies above both budget lines and is unaffordable at either wage."
+         tabindex="0" role="button" aria-label="Bundle F: 6 hours leisure and 260 pounds consumption. Click to select.">
+        <circle class="bundle" cx="400" cy="173.333" r="9"/>
+        <text class="bundle-label" x="434" y="150">F (6, £260)</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="legend" aria-label="Graph legend">
+    <div class="legend-item"><span class="swatch bc1" aria-hidden="true"></span><span>£10/hour budget line</span></div>
+    <div class="legend-item"><span class="swatch bc2" aria-hidden="true"></span><span>£20/hour budget line</span></div>
+    <div class="legend-item"><span class="dot" aria-hidden="true"></span><span>Consumption–leisure bundle</span></div>
+  </div>
+
+  <div class="details" id="details" aria-live="polite">
+    <strong>Selection:</strong> Click any line or bundle to inspect it.
+  </div>
+
+  <section class="bundle-key" aria-labelledby="bundleKeyHeading">
+    <h2 id="bundleKeyHeading">Bundle locations</h2>
+    <ul>
+      <li><strong>A:</strong> on the £10/hour budget line.</li>
+      <li><strong>B:</strong> on the £20/hour budget line.</li>
+      <li><strong>C:</strong> below the £10/hour budget line.</li>
+      <li><strong>D:</strong> below the £20/hour budget line.</li>
+      <li><strong>E:</strong> between the two budget lines.</li>
+      <li><strong>F:</strong> above both budget lines.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const chartWrap = document.getElementById("chartWrap");
+  const graph = document.getElementById("graph");
+  const tooltip = document.getElementById("tooltip");
+  const details = document.getElementById("details");
+  const status = document.getElementById("status");
+
+  const plot = { left:100, right:900, top:40, bottom:520, xScale:50, yScale:480/360 };
+
+  const lines = {
+    bc1Group: { wage:10, maxConsumption:160, pointClass:"bc1-point", name:"£10/hour line" },
+    bc2Group: { wage:20, maxConsumption:320, pointClass:"bc2-point", name:"£20/hour line" }
+  };
+
+  function xForLeisure(L){ return plot.left + L * plot.xScale; }
+  function yForConsumption(C){ return plot.bottom - C * plot.yScale; }
+
+  function makeCoordinatePoints(groupId){
+    const cfg = lines[groupId];
+    const group = document.getElementById(groupId);
+    const holder = group.querySelector(".coords");
+    const ns = "http://www.w3.org/2000/svg";
+
+    for(let L=0; L<=16; L++){
+      const C = cfg.maxConsumption - cfg.wage * L;
+      const circle = document.createElementNS(ns, "circle");
+      circle.setAttribute("class", "coord-point " + cfg.pointClass);
+      circle.setAttribute("cx", xForLeisure(L));
+      circle.setAttribute("cy", yForConsumption(C));
+      circle.setAttribute("r", "5");
+      circle.dataset.leisure = String(L);
+      circle.dataset.consumption = String(C);
+      circle.dataset.line = cfg.name;
+      circle.setAttribute("tabindex", "-1");
+      holder.appendChild(circle);
+    }
+  }
+
+  makeCoordinatePoints("bc1Group");
+  makeCoordinatePoints("bc2Group");
+
+  function showTooltip(event, html){
+    const gap = 12;
+    const margin = 10;
+
+    tooltip.innerHTML = html;
+    tooltip.hidden = false;
+
+    // Measure the rendered tooltip, then place it where it will remain visible.
+    const rect = tooltip.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    let left = event.clientX + gap;
+    let top = event.clientY - height - gap;
+
+    // Near the right edge, move the tooltip to the left of the pointer.
+    if(left + width + margin > window.innerWidth){
+      left = event.clientX - width - gap;
+    }
+
+    // Keep it inside the left edge as well.
+    if(left < margin){
+      left = margin;
+    }
+
+    // If there is not enough room above, show it below the pointer.
+    if(top < margin){
+      top = event.clientY + gap;
+    }
+
+    // Keep the bottom edge inside the viewport.
+    if(top + height + margin > window.innerHeight){
+      top = Math.max(margin, window.innerHeight - height - margin);
+    }
+
+    tooltip.style.left = Math.round(left) + "px";
+    tooltip.style.top = Math.round(top) + "px";
+  }
+
+  function hideTooltip(){
+    tooltip.hidden = true;
+  }
+
+  graph.querySelectorAll(".coord-point").forEach(function(point){
+    point.addEventListener("mouseenter", function(event){
+      showTooltip(
+        event,
+        "<strong>" + point.dataset.line + "</strong><br>" +
+        "Leisure: " + point.dataset.leisure + " hours<br>" +
+        "Consumption: £" + point.dataset.consumption
+      );
+    });
+
+    point.addEventListener("mousemove", function(event){
+      showTooltip(
+        event,
+        "<strong>" + point.dataset.line + "</strong><br>" +
+        "Leisure: " + point.dataset.leisure + " hours<br>" +
+        "Consumption: £" + point.dataset.consumption
+      );
+    });
+
+    point.addEventListener("mouseleave", hideTooltip);
+  });
+
+  graph.querySelectorAll(".bundle-group").forEach(function(group){
+    const circle = group.querySelector(".bundle");
+
+    circle.addEventListener("mouseenter", function(event){
+      showTooltip(event, "<strong>" + group.dataset.title + "</strong><br>" + group.dataset.details);
+    });
+    circle.addEventListener("mousemove", function(event){
+      showTooltip(event, "<strong>" + group.dataset.title + "</strong><br>" + group.dataset.details);
+    });
+    circle.addEventListener("mouseleave", hideTooltip);
+  });
+
+  function selectObject(group){
+    const isSelected = group.classList.contains("selected");
+
+    graph.querySelectorAll(".line-group.selected, .bundle-group.selected").forEach(function(el){
+      el.classList.remove("selected");
+    });
+
+    if(isSelected){
+      details.innerHTML = "<strong>Selection:</strong> Click any line or bundle to inspect it.";
+      status.textContent = "Selection cleared.";
+      return;
+    }
+
+    group.classList.add("selected");
+    details.innerHTML = "<strong>" + group.dataset.title + ":</strong> " + group.dataset.details;
+    status.textContent = group.dataset.title + " selected.";
+  }
+
+  graph.querySelectorAll(".line-group, .bundle-group").forEach(function(group){
+    group.addEventListener("click", function(event){
+      if(event.target.classList.contains("coord-point")){
+        return;
+      }
+      selectObject(group);
+    });
+
+    group.addEventListener("keydown", function(event){
+      if(event.key === "Enter" || event.key === " "){
+        event.preventDefault();
+        selectObject(group);
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-toggle]").forEach(function(button){
+    button.addEventListener("click", function(){
+      const id = button.dataset.toggle;
+      const target = document.getElementById(id);
+      const nowVisible = target.classList.contains("hidden");
+
+      target.classList.toggle("hidden", !nowVisible);
+      button.setAttribute("aria-pressed", String(nowVisible));
+
+      if(id === "bc1Group"){
+        button.textContent = nowVisible ? "£10/hour line" : "Show £10/hour line";
+      } else if(id === "bc2Group"){
+        button.textContent = nowVisible ? "£20/hour line" : "Show £20/hour line";
+      } else {
+        const label = id.replace("bundle","");
+        button.textContent = nowVisible ? label : "Show " + label;
+      }
+
+      if(!nowVisible && target.classList.contains("selected")){
+        target.classList.remove("selected");
+        details.innerHTML = "<strong>Selection:</strong> Click any line or bundle to inspect it.";
+      }
+
+      status.textContent = (nowVisible ? "Shown: " : "Hidden: ") + id + ".";
+    });
+  });
+
+  // Continuous line-coordinate tooltip: hovering the wider hit area shows the
+  // nearest whole-hour coordinate on that budget line.
+  Object.keys(lines).forEach(function(groupId){
+    const group = document.getElementById(groupId);
+    const cfg = lines[groupId];
+    const hit = group.querySelector(".budget-hit");
+
+    hit.addEventListener("mousemove", function(event){
+      const svgPoint = graph.createSVGPoint();
+      svgPoint.x = event.clientX;
+      svgPoint.y = event.clientY;
+      const local = svgPoint.matrixTransform(graph.getScreenCTM().inverse());
+
+      let L = Math.round((local.x - plot.left) / plot.xScale);
+      L = Math.max(0, Math.min(16, L));
+      const C = cfg.maxConsumption - cfg.wage * L;
+
+      showTooltip(
+        event,
+        "<strong>" + cfg.name + "</strong><br>" +
+        "Nearest whole-hour bundle:<br>" +
+        "Leisure: " + L + " hours<br>" +
+        "Consumption: £" + C
+      );
+    });
+
+    hit.addEventListener("mouseleave", hideTooltip);
+  });
+}());
+</script>
+</body>
+</html>

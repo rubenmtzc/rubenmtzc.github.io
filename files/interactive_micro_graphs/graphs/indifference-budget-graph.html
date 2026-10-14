@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive Indifference Curves and Budget Constraints</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink:#182432; --muted:#586777; --line:#d9e1e8; --page:#f3f6f9; --blue:#2459bd;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink)}
+  header{padding:22px clamp(18px,3vw,42px) 16px;background:#fff;border-bottom:1px solid var(--line)}
+  h1{margin:0 0 7px;font-size:clamp(1.35rem,2vw,1.85rem);line-height:1.2}
+  header p{margin:0;max-width:1000px;color:var(--muted);font-size:.95rem;line-height:1.5}
+  main{max-width:1600px;margin:0 auto;padding:18px}
+  .layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 12px #20344a0a}
+  aside{padding:15px}
+  h2{margin:0;font-size:.97rem}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
+  .intro{padding:0 0 14px;margin-bottom:14px;border-bottom:1px solid #e9eef2;color:var(--muted);font-size:.82rem;line-height:1.45}
+  .bc-card{border:1px solid #dce4eb;border-radius:11px;padding:11px;margin-bottom:10px;background:#fbfcfd}
+  .bc-card.target{border-color:#8faed2;box-shadow:0 0 0 2px #315f9d12}
+  .bc-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+  .bc-name{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.9rem}
+  .line-chip{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
+  .small-actions{display:flex;gap:5px;align-items:center}
+  button{font:inherit;cursor:pointer}
+  .small-btn,.toggle,.add-btn,.reset-btn{
+    border:1px solid #cbd5df;background:#fff;color:#344354;border-radius:8px;padding:6px 9px;min-height:31px;font-size:.78rem
+  }
+  .small-btn:hover,.toggle:hover,.add-btn:hover,.reset-btn:hover{background:#f3f7fa}
+  .small-btn[aria-pressed="true"],.toggle[aria-pressed="true"]{border-color:#315f9d;color:#183e72;background:#eaf1fb}
+  .small-btn.use-effect[aria-pressed="true"]{border-color:#315f9d;background:#eaf1fb;color:#183e72;font-weight:700}
+  .small-btn.remove{color:#8f3d37}
+  .param{margin:8px 0}
+  .param-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.79rem;color:#3a4b5b}
+  .param-head output{font-variant-numeric:tabular-nums;font-weight:700;color:#1d344c}
+  input[type=range]{width:100%;margin:4px 0 0;accent-color:#315f9d}
+  .add-btn{width:100%;min-height:38px;margin:1px 0 13px;border-style:dashed;font-weight:700;color:#244d79}
+  .add-btn:disabled{opacity:.5;cursor:not-allowed}
+  .control-section{padding:0 0 13px;margin:0 0 13px;border-bottom:1px solid #e9eef2}
+  .control-section:last-of-type{border-bottom:0;margin-bottom:4px}
+  .toggle-row{display:flex;flex-wrap:wrap;gap:6px}
+  .toggle.violet[aria-pressed="true"]{color:#5b378d;border-color:#7952b7;background:#f4effb}
+  .toggle.coral[aria-pressed="true"]{color:#9a3d2b;border-color:#cf6049;background:#fff1ed}
+  .toggle.green[aria-pressed="true"]{color:#1e6557;border-color:#247b68;background:#eaf7f3}
+  .toggle.gold[aria-pressed="true"]{color:#78550d;border-color:#b68620;background:#fff7e3}
+  .hint{margin:7px 0 0;color:var(--muted);font-size:.77rem;line-height:1.45}
+  .reset-btn{width:100%;margin-top:7px;background:#f8fafc}
+  .graph-panel{overflow:hidden}
+  .graph-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px 10px}
+  .graph-title{font-size:.97rem;font-weight:700}
+  .graph-head-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+  .drag-note{color:var(--muted);font-size:.78rem}
+  .hover-toggle{border:1px solid #315f9d;color:#183e72;background:#eaf1fb;border-radius:8px;padding:6px 9px;font-size:.78rem;min-height:31px}
+  .hover-toggle[aria-pressed="false"]{border-color:#cbd5df;color:#344354;background:#fff}
+  .svg-wrap{padding:0 10px 8px;overflow-x:auto}
+  svg{display:block;width:100%;min-width:680px;height:auto;touch-action:none;background:#fff}
+  .plot-bg{fill:#fcfdfe;stroke:#d9e1e8;stroke-width:1}
+  .grid{stroke:#e9eef3;stroke-width:1}
+  .axis{stroke:#536475;stroke-width:1.8}
+  .tick{stroke:#667788;stroke-width:1.2}
+  .budget-line{fill:none;stroke-width:2.6;pointer-events:none}
+  .comp-line{fill:none;stroke:#7952b7;stroke-width:2.2;stroke-dasharray:8 6;pointer-events:none}
+  .ic-line{fill:none;stroke:#237d72;stroke-width:2.5;pointer-events:none}
+  .hit-area{fill:none;stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:crosshair}
+  .bundle-dot{stroke:#fff;stroke-width:2.2}
+  .label{font-family:Arial,Helvetica,sans-serif;fill:#263746;font-size:14px;user-select:none}
+  .tick-label{fill:#5c6b79;font-size:12px}
+  .axis-label{font-size:15px;font-weight:700}
+  .bc-label{font-size:13px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .ic-label{font-size:12px;fill:#216a62;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .bundle-label{font-size:16px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .effect-label{font-size:12px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .draggable{cursor:grab}
+  .draggable:active{cursor:grabbing}
+  .effect{fill:none;stroke-width:2.5}
+  .effect.substitution{stroke:#7952b7;stroke-dasharray:7 5}
+  .effect.income{stroke:#cf6049;stroke-dasharray:4 4}
+  .effect.total{stroke:#247b68;stroke-width:2.8}
+  .footer{padding:11px 16px 14px;border-top:1px solid #e8edf2;color:var(--muted);font-size:.8rem;line-height:1.5}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin-top:6px}
+  .legend span{white-space:nowrap}
+  .swatch{display:inline-block;vertical-align:middle;width:20px;height:0;margin-right:5px;border-top:3px solid}
+  .swatch.comp{border-color:#7952b7;border-top-style:dashed}
+  .swatch.ic{border-color:#237d72}
+  .hover-tooltip{position:fixed;z-index:20;display:none;pointer-events:none;max-width:300px;padding:7px 9px;border-radius:7px;background:#172838;color:#fff;box-shadow:0 4px 14px #0003;font-size:.78rem;line-height:1.35;font-variant-numeric:tabular-nums}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}.bc-list,.add-btn{grid-column:1/-1}.control-section{min-width:0}}
+  @media(max-width:620px){main{padding:10px}aside{display:block}.graph-head{align-items:flex-start;flex-direction:column}.graph-head-right{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Indifference Curves and Budget Constraints</h1>
+  <p>Set each budget line independently. Add further budgets to compare price and income changes, then use the compensated line and bundles A, B and C to illustrate substitution, income and total effects.</p>
+</header>
+<main>
+<div class="layout">
+  <aside class="panel" aria-label="Graph controls">
+    <div class="intro">The graph uses the standard convex Cobb–Douglas preferences U = √(x₁x₂). Each editable budget line has its own p₁, p₂ and income m. Its slope is −p₁/p₂.</div>
+    <section class="control-section bc-list">
+      <div class="section-head"><h2>Budget constraints</h2><span class="count" id="bcCount">1 line</span></div>
+      <div id="budgetControls"></div>
+      <button class="add-btn" id="addBudget">＋ Add a new budget constraint</button>
+      <p class="hint">Select “Use for effects” on one added line. The graph then calculates the compensated budget line at that line’s prices.</p>
+    </section>
+    <section class="control-section">
+      <div class="section-head"><h2>Indifference curves</h2><span class="count">3 shown</span></div>
+      <p class="hint">Three convex curves are shown. They include the initial and final utility levels and a comparison level between them.</p>
+    </section>
+    <section class="control-section">
+      <div class="section-head"><h2>Effects to show</h2></div>
+      <div class="toggle-row" role="group" aria-label="Show effects">
+        <button class="toggle violet effect-toggle" data-effect="substitution" aria-pressed="true">Substitution</button>
+        <button class="toggle coral effect-toggle" data-effect="income" aria-pressed="true">Income</button>
+        <button class="toggle green effect-toggle" data-effect="total" aria-pressed="true">Total</button>
+      </div>
+    </section>
+    <section class="control-section">
+      <div class="section-head"><h2>Consumption bundles</h2></div>
+      <div class="toggle-row" role="group" aria-label="Show consumption bundles">
+        <button class="toggle" data-bundle="A" aria-pressed="true">A</button>
+        <button class="toggle violet" data-bundle="B" aria-pressed="true">B</button>
+        <button class="toggle gold" data-bundle="C" aria-pressed="true">C</button>
+      </div>
+      <p class="hint">A is the initial optimum, B the compensated optimum at the selected new prices, and C the final optimum.</p>
+    </section>
+    <button class="reset-btn" id="resetLabels">Reset graph label positions</button>
+  </aside>
+
+  <section class="panel graph-panel" aria-label="Interactive graph">
+    <div class="graph-head">
+      <div class="graph-title" id="graphCaption">Budget constraints and effects</div>
+      <div class="graph-head-right">
+        <button class="hover-toggle" id="hoverToggle" aria-pressed="true">Hover coordinates: On</button>
+        <span class="drag-note">Drag graph labels to move them</span>
+      </div>
+    </div>
+    <div class="svg-wrap">
+      <svg id="graph" viewBox="0 0 920 620" role="img" aria-label="Three convex indifference curves, editable budget constraints and consumer choice effects">
+        <defs>
+          <marker id="arrow-sub" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#7952b7"/></marker>
+          <marker id="arrow-income" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#cf6049"/></marker>
+          <marker id="arrow-total" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#247b68"/></marker>
+        </defs>
+        <g id="drawing"></g>
+      </svg>
+    </div>
+    <div class="footer">
+      <div><b>Effect decomposition:</b> A → B is the compensated substitution effect, B → C is the income effect, and A → C is the total effect.</div>
+      <div class="legend"><span><i class="swatch" style="border-color:#2459bd"></i>Editable BC 1</span><span><i class="swatch comp"></i>Compensated BC</span><span><i class="swatch ic"></i>Indifference curves</span></div>
+      <p class="hint" id="effectNote">Hover over an indifference curve or budget line to read the coordinates. Use the button above the graph to turn coordinate readouts off.</p>
+    </div>
+  </section>
+</div>
+</main>
+<div class="hover-tooltip" id="hoverTooltip" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  const svg = document.getElementById('graph');
+  const drawing = document.getElementById('drawing');
+  const tooltip = document.getElementById('hoverTooltip');
+  const offsets = new Map();
+  const palette = ['#2459bd','#d15b42','#24866f','#8052b7','#b07b14','#287a9b'];
+  const state = {
+    budgets: [
+      {id:1,p1:1,p2:1,m:180,visible:true}
+    ],
+    nextId:2,
+    targetId:null,
+    effects:{substitution:true,income:true,total:true},
+    bundles:{A:true,B:true,C:true},
+    hover:true
+  };
+  const plot={left:92,right:875,top:48,bottom:525};
+  const alpha=0.5, NS='http://www.w3.org/2000/svg';
+  let drawScale={xmax:100,ymax:100};
+  const fmt=n=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:1,maximumFractionDigits:2});
+  const colorFor=i=>palette[i%palette.length];
+
+  function utility(x,y){return Math.sqrt(Math.max(0,x*y))}
+  function demand(b){return {x:alpha*b.m/b.p1,y:(1-alpha)*b.m/b.p2}}
+  function hicksian(u,p1,p2){return {x:u*Math.sqrt(p2/p1),y:u*Math.sqrt(p1/p2)}}
+  function expenditure(u,p1,p2){return 2*u*Math.sqrt(p1*p2)}
+  function getModel(){
+    const base=state.budgets[0], target=state.budgets.find(b=>b.id===state.targetId)||null;
+    const A=demand(base), uA=utility(A.x,A.y);
+    const B=target?hicksian(uA,target.p1,target.p2):null;
+    const mH=target?expenditure(uA,target.p1,target.p2):null;
+    const C=target?demand(target):null;
+    const uC=C?utility(C.x,C.y):uA;
+    let levels;
+    if(target&&Math.abs(uC-uA)>Math.max(0.01,uA*0.015)) levels=[uA,uC,(uA+uC)/2];
+    else levels=[uA*0.82,uA,uA*1.18];
+    levels.sort((a,b)=>a-b);
+    return {base,target,A,B,C,uA,uC,mH,levels};
+  }
+  function el(name,attrs={},text=''){
+    const node=document.createElementNS(NS,name);
+    for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);
+    if(text!=='')node.textContent=text;
+    return node;
+  }
+  function add(node){drawing.appendChild(node);return node}
+  function X(x,xmax){return plot.left+x/xmax*(plot.right-plot.left)}
+  function Y(y,ymax){return plot.bottom-y/ymax*(plot.bottom-plot.top)}
+  function label(key,x,y,text,klass='',extra={}){
+    const attrs={x,y,class:`label draggable ${klass}`.trim(),'data-label-key':key,...extra};
+    const off=offsets.get(key);
+    if(off){attrs.x=x+off.dx;attrs.y=y+off.dy}
+    if(key==='axis-y')attrs.transform=`rotate(-90 ${attrs.x} ${attrs.y})`;
+    add(el('text',attrs,text));
+  }
+  function curvePath(u,xmax,ymax){
+    const pts=[],n=260;
+    for(let i=0;i<=n;i++){
+      const x=Math.max(xmax*i/n,0.001), y=u*u/x;
+      if(y>=0&&y<=ymax*1.03)pts.push([X(x,xmax),Y(y,ymax)]);
+    }
+    return pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+  }
+  function bcPath(b,xmax,ymax){
+    const xi=b.m/b.p1, yi=b.m/b.p2, xend=Math.min(xmax,xi), yend=Math.max(0,(b.m-b.p1*xend)/b.p2);
+    return {x1:X(0,xmax),y1:Y(yi,ymax),x2:X(xend,xmax),y2:Y(yend,ymax),xi,yi};
+  }
+  function appendHoverPath(path,attrs){
+    add(el('path',{d:path,class:'hit-area',...attrs}));
+  }
+  function draw(){
+    const d=getModel();
+    const shown=state.budgets.filter(b=>b.visible);
+    const allLines=shown.map(b=>({x:b.m/b.p1,y:b.m/b.p2}));
+    if(d.target&&state.budgets.find(b=>b.id===d.target.id)?.visible===false)allLines.push({x:d.target.m/d.target.p1,y:d.target.m/d.target.p2});
+    if(d.target){allLines.push({x:d.mH/d.target.p1,y:d.mH/d.target.p2})}
+    const points=[d.A,d.B,d.C].filter(Boolean);
+    let ymax=Math.max(35,...allLines.map(p=>p.y),...points.map(p=>p.y))*1.17;
+    let xmax=Math.max(55,...allLines.map(p=>p.x),...points.map(p=>p.x))*1.12;
+    xmax=Math.max(xmax,...d.levels.map(u=>u*u/(ymax*0.55)));
+    drawScale={xmax,ymax};
+    drawing.replaceChildren();
+
+    add(el('rect',{x:plot.left,y:plot.top,width:plot.right-plot.left,height:plot.bottom-plot.top,class:'plot-bg'}));
+    for(let i=0;i<=4;i++){
+      const xv=xmax*i/4,yv=ymax*i/4,xx=X(xv,xmax),yy=Y(yv,ymax);
+      if(i>0){add(el('line',{x1:xx,y1:plot.top,x2:xx,y2:plot.bottom,class:'grid'}));add(el('line',{x1:plot.left,y1:yy,x2:plot.right,y2:yy,class:'grid'}))}
+      add(el('line',{x1:xx,y1:plot.bottom,x2:xx,y2:plot.bottom+5,class:'tick'}));
+      add(el('line',{x1:plot.left-5,y1:yy,x2:plot.left,y2:yy,class:'tick'}));
+      label(`xtick-${i}`,xx,plot.bottom+22,fmt(xv),'tick-label',{'text-anchor':'middle'});
+      label(`ytick-${i}`,plot.left-11,yy+4,fmt(yv),'tick-label',{'text-anchor':'end'});
+    }
+    add(el('line',{x1:plot.left,y1:plot.bottom,x2:plot.right+4,y2:plot.bottom,class:'axis'}));
+    add(el('line',{x1:plot.left,y1:plot.bottom,x2:plot.left,y2:plot.top-5,class:'axis'}));
+    label('axis-x',(plot.left+plot.right)/2,580,'Quantity of good 1 (x₁)','axis-label',{'text-anchor':'middle'});
+    label('axis-y',28,(plot.top+plot.bottom)/2,'Quantity of good 2 (x₂)','axis-label',{'text-anchor':'middle'});
+
+    // Editable budget constraints, each with its own p1, p2 and m.
+    for(const b of shown){
+      const idx=state.budgets.findIndex(q=>q.id===b.id), color=colorFor(idx), coords=bcPath(b,xmax,ymax);
+      const attrs={class:'budget-line',stroke:color,'data-hover-type':'budget','data-kind':`BC ${idx+1}`,'data-p1':b.p1,'data-p2':b.p2,'data-income':b.m};
+      const line=el('line',{x1:coords.x1,y1:coords.y1,x2:coords.x2,y2:coords.y2,...attrs});
+      const hit=el('line',{x1:coords.x1,y1:coords.y1,x2:coords.x2,y2:coords.y2,class:'hit-area','data-hover-type':'budget','data-kind':`BC ${idx+1}`,'data-p1':b.p1,'data-p2':b.p2,'data-income':b.m});
+      add(hit);add(line);
+      const lx=Math.min(coords.xi*0.69,xmax*0.86), ly=(b.m-b.p1*lx)/b.p2;
+      label(`bc-${b.id}`,X(lx,xmax)+5,Y(ly,ymax)-8,`BC ${idx+1}  (−${fmt(b.p1/b.p2)})`,'bc-label',{fill:color});
+    }
+    // The compensated budget line is calculated from the original utility and target prices.
+    if(d.target&&d.B&&d.mH){
+      const comp={id:'comp',p1:d.target.p1,p2:d.target.p2,m:d.mH},c=bcPath(comp,xmax,ymax);
+      const attrs={'data-hover-type':'budget','data-kind':'Compensated BC','data-p1':comp.p1,'data-p2':comp.p2,'data-income':comp.m};
+      add(el('line',{x1:c.x1,y1:c.y1,x2:c.x2,y2:c.y2,class:'hit-area',...attrs}));
+      add(el('line',{x1:c.x1,y1:c.y1,x2:c.x2,y2:c.y2,class:'comp-line',...attrs}));
+      const lx=Math.min(c.xi*0.69,xmax*0.86),ly=(comp.m-comp.p1*lx)/comp.p2;
+      label('bc-comp',X(lx,xmax)+5,Y(ly,ymax)-8,'Compensated BC','bc-label',{fill:'#7952b7'});
+    }
+    // Exactly three standard convex indifference curves.
+    d.levels.forEach((u,i)=>{
+      const path=curvePath(u,xmax,ymax);
+      appendHoverPath(path,{'data-hover-type':'ic','data-kind':`IC ${i+1}`,'data-utility':u});
+      add(el('path',{d:path,class:'ic-line'}));
+      let lx=Math.min(xmax*0.72,u*u/(ymax*0.35));
+      lx=Math.max(lx,xmax*0.08);
+      let ly=u*u/lx;
+      if(ly>ymax*0.88){ly=ymax*0.8;lx=u*u/ly}
+      label(`ic-${i}`,X(lx,xmax)+7,Y(ly,ymax)-5,`IC ${i+1}  (u=${fmt(u)})`,'ic-label');
+    });
+    // Effect arrows reference the initial line and the selected final line.
+    if(d.target&&d.B&&d.C){
+      const effects=[
+        {key:'substitution',from:d.A,to:d.B,text:'Substitution: A → B',marker:'arrow-sub',dy:-14,color:'#654195'},
+        {key:'income',from:d.B,to:d.C,text:'Income: B → C',marker:'arrow-income',dy:18,color:'#a34532'},
+        {key:'total',from:d.A,to:d.C,text:'Total: A → C',marker:'arrow-total',dy:30,color:'#1d6a59'}
+      ];
+      for(const e of effects){
+        if(!state.effects[e.key])continue;
+        const x1=X(e.from.x,xmax),y1=Y(e.from.y,ymax),x2=X(e.to.x,xmax),y2=Y(e.to.y,ymax);
+        add(el('line',{x1,y1,x2,y2,class:`effect ${e.key}`,'marker-end':`url(#${e.marker})`}));
+        label(`effect-${e.key}`,(x1+x2)/2,(y1+y2)/2+e.dy,e.text,'effect-label',{fill:e.color,'text-anchor':'middle'});
+      }
+    }
+    const bundleItems=[['A',d.A,'#2459bd',-12,-12],['B',d.B,'#7952b7',11,-11],['C',d.C,'#b68620',11,18]];
+    for(const [name,p,color,dx,dy] of bundleItems){
+      if(!p||!state.bundles[name])continue;
+      add(el('circle',{cx:X(p.x,xmax),cy:Y(p.y,ymax),r:6.5,class:'bundle-dot',fill:color}));
+      label(`bundle-${name}`,X(p.x,xmax)+dx,Y(p.y,ymax)+dy,name,'bundle-label',{fill:color});
+    }
+    label('slope-note',plot.right-10,plot.top+19,'Each BC slope = −p₁/p₂','',{'text-anchor':'end',fill:'#5c6b79','font-size':12});
+    document.getElementById('graphCaption').textContent=d.target?`BC 1 and BC ${state.budgets.findIndex(b=>b.id===d.target.id)+1}: price and income comparison`:'Add a budget constraint to show the effects decomposition';
+    document.getElementById('effectNote').textContent=d.target
+      ? `The compensated income is mᴴ = ${fmt(d.mH)} at the selected new prices (p₁=${fmt(d.target.p1)}, p₂=${fmt(d.target.p2)}). Hover over a curve or line for coordinates.`
+      : 'Add a second budget constraint and select “Use for effects” to display the substitution, income and total effects.';
+    // Apply saved label positions after every redraw.
+    for(const node of drawing.querySelectorAll('[data-label-key]')){
+      const off=offsets.get(node.dataset.labelKey);
+      if(off&&node.dataset.labelKey==='axis-y')node.setAttribute('transform',`rotate(-90 ${node.getAttribute('x')} ${node.getAttribute('y')})`);
+    }
+  }
+  function renderBudgetControls(){
+    const host=document.getElementById('budgetControls');host.replaceChildren();
+    state.budgets.forEach((b,index)=>{
+      const card=document.createElement('div');card.className='bc-card'+(b.id===state.targetId?' target':'');
+      const head=document.createElement('div');head.className='bc-card-head';
+      const name=document.createElement('div');name.className='bc-name';
+      const chip=document.createElement('span');chip.className='line-chip';chip.style.background=colorFor(index);
+      const title=document.createElement('span');title.textContent=`BC ${index+1}`;name.append(chip,title);
+      const actions=document.createElement('div');actions.className='small-actions';
+      const show=document.createElement('button');show.type='button';show.className='small-btn';show.textContent=b.visible?'Shown':'Hidden';show.setAttribute('aria-pressed',String(b.visible));show.setAttribute('aria-label',`Toggle BC ${index+1}`);
+      show.addEventListener('click',()=>{b.visible=!b.visible;renderBudgetControls();draw()});actions.append(show);
+      if(index>0){
+        const use=document.createElement('button');use.type='button';use.className='small-btn use-effect';use.textContent='Use for effects';use.setAttribute('aria-pressed',String(b.id===state.targetId));
+        use.addEventListener('click',()=>{state.targetId=b.id;renderBudgetControls();draw()});actions.append(use);
+        const remove=document.createElement('button');remove.type='button';remove.className='small-btn remove';remove.textContent='Remove';remove.addEventListener('click',()=>{
+          state.budgets=state.budgets.filter(q=>q.id!==b.id);
+          if(state.targetId===b.id)state.targetId=state.budgets.length>1?state.budgets[state.budgets.length-1].id:null;
+          renderBudgetControls();syncBudgetCount();draw();
+        });actions.append(remove);
+      }
+      head.append(name,actions);card.append(head);
+      for(const [key,labelText,min,max,step] of [['p1','Price p₁',0.25,5,0.05],['p2','Price p₂',0.25,5,0.05],['m','Income m',40,400,5]]){
+        const wrap=document.createElement('label');wrap.className='param';
+        const line=document.createElement('span');line.className='param-head';
+        const lab=document.createElement('span');lab.textContent=labelText;
+        const out=document.createElement('output');out.textContent=fmt(b[key]);line.append(lab,out);
+        const range=document.createElement('input');range.type='range';range.min=min;range.max=max;range.step=step;range.value=b[key];range.setAttribute('aria-label',`BC ${index+1} ${labelText}`);
+        range.addEventListener('input',()=>{b[key]=Number(range.value);out.textContent=fmt(b[key]);draw()});
+        wrap.append(line,range);card.append(wrap);
+      }
+      host.append(card);
+    });
+    syncBudgetCount();
+  }
+  function syncBudgetCount(){
+    document.getElementById('bcCount').textContent=`${state.budgets.length} ${state.budgets.length===1?'line':'lines'}`;
+    document.getElementById('addBudget').disabled=state.budgets.length>=6;
+  }
+  document.getElementById('addBudget').addEventListener('click',()=>{
+    if(state.budgets.length>=6)return;
+    const prev=state.budgets[state.budgets.length-1];
+    const b={id:state.nextId++,p1:Math.min(5,Math.round(prev.p1*1.5*20)/20),p2:prev.p2,m:Math.max(40,Math.round(prev.m*0.75/5)*5),visible:true};
+    state.budgets.push(b);state.targetId=b.id;renderBudgetControls();draw();
+  });
+  document.querySelectorAll('.effect-toggle').forEach(button=>button.addEventListener('click',()=>{
+    const key=button.dataset.effect;state.effects[key]=!state.effects[key];button.setAttribute('aria-pressed',String(state.effects[key]));draw();
+  }));
+  document.querySelectorAll('[data-bundle]').forEach(button=>button.addEventListener('click',()=>{
+    const key=button.dataset.bundle;state.bundles[key]=!state.bundles[key];button.setAttribute('aria-pressed',String(state.bundles[key]));draw();
+  }));
+  document.getElementById('hoverToggle').addEventListener('click',event=>{
+    state.hover=!state.hover;event.currentTarget.setAttribute('aria-pressed',String(state.hover));event.currentTarget.textContent=`Hover coordinates: ${state.hover?'On':'Off'}`;
+    if(!state.hover)tooltip.style.display='none';
+  });
+  document.getElementById('resetLabels').addEventListener('click',()=>{offsets.clear();draw()});
+
+  let drag=null;
+  function svgPoint(event){const pt=svg.createSVGPoint();pt.x=event.clientX;pt.y=event.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse())}
+  function showCoordinates(event,node){
+    if(!state.hover||!node){tooltip.style.display='none';return}
+    const p=svgPoint(event),xmax=drawScale.xmax,ymax=drawScale.ymax;
+    const x=(p.x-plot.left)/(plot.right-plot.left)*xmax;
+    let y,details='';
+    if(node.dataset.hoverType==='budget'){
+      const p1=Number(node.dataset.p1),p2=Number(node.dataset.p2),m=Number(node.dataset.income);y=(m-p1*x)/p2;
+      details=`${node.dataset.kind} · p₁=${fmt(p1)}, p₂=${fmt(p2)}, m=${fmt(m)}`;
+    }else{
+      const u=Number(node.dataset.utility);y=u*u/Math.max(x,0.001);details=`${node.dataset.kind} · u=${fmt(u)}`;
+    }
+    if(x<0||x>xmax||y<0||y>ymax){tooltip.style.display='none';return}
+    tooltip.innerHTML=`<b>${details}</b><br>x₁ = ${fmt(x)} &nbsp; x₂ = ${fmt(y)}`;
+    tooltip.style.left=`${Math.min(event.clientX+14,window.innerWidth-315)}px`;
+    tooltip.style.top=`${Math.min(event.clientY+14,window.innerHeight-75)}px`;
+    tooltip.style.display='block';
+  }
+  svg.addEventListener('pointerdown',event=>{
+    const node=event.target.closest('[data-label-key]');if(!node)return;
+    event.preventDefault();const p=svgPoint(event),key=node.dataset.labelKey,off=offsets.get(key)||{dx:0,dy:0};
+    drag={node,key,x:Number(node.getAttribute('x')),y:Number(node.getAttribute('y')),px:p.x,py:p.y,dx:off.dx,dy:off.dy};svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener('pointermove',event=>{
+    if(drag){const p=svgPoint(event),dx=p.x-drag.px,dy=p.y-drag.py;drag.node.setAttribute('x',drag.x+dx);drag.node.setAttribute('y',drag.y+dy);if(drag.key==='axis-y')drag.node.setAttribute('transform',`rotate(-90 ${drag.x+dx} ${drag.y+dy})`);offsets.set(drag.key,{dx:drag.dx+dx,dy:drag.dy+dy});tooltip.style.display='none';return}
+    showCoordinates(event,event.target.closest('[data-hover-type]'));
+  });
+  svg.addEventListener('pointerleave',()=>{if(!drag)tooltip.style.display='none'});
+  svg.addEventListener('pointerup',()=>{drag=null});
+  svg.addEventListener('pointercancel',()=>{drag=null});
+  renderBudgetControls();draw();
+})();
+</script>
+</body>
+</html>
