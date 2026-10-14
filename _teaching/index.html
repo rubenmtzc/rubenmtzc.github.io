@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive economics graphs for teaching and learning: budget constraints, labour–leisure choice, indifference curves, and utility.">
+<title>Interactive Economics Graphs</title>
+<style>
+:root{color-scheme:light;--bg:#f5f7fa;--paper:#fff;--ink:#152535;--sub:#526779;--navy:#13344f;--teal:#11616a;--line:#dce4ea;--focus:#006fc9}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+a{color:inherit}a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:3px}
+.container{width:min(1120px,calc(100% - 42px));margin:0 auto}
+header{background:var(--navy);color:#fff;padding:28px 0 46px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:38px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.04em;font-size:.9rem}.topline a{color:#e0edf3;font-size:.85rem;text-decoration:none;border-bottom:1px solid #7795aa}
+.eyebrow{display:inline-block;color:#bfe4e8;text-transform:uppercase;letter-spacing:.17em;font-weight:700;font-size:.75rem;margin-bottom:6px}
+h1{font-size:clamp(2.1rem,5.5vw,3.75rem);line-height:1.1;letter-spacing:-.04em;margin:9px 0 17px;max-width:780px}
+.lead{max-width:720px;font-size:1.1rem;line-height:1.7;margin:0;color:#e0e9f1}
+.quicknav{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0}
+.quicknav a{display:inline-block;text-decoration:none;border:1px solid #66879d;color:#fff;border-radius:100px;padding:8px 15px;font-size:.85rem;font-weight:700}
+.quicknav a:hover{background:#ffffff18}
+main{padding:35px 0 52px}
+.summary{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:17px 21px;display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-bottom:35px}
+.summary strong{color:var(--navy);font-size:1.15rem}.summary span{color:var(--sub);font-size:.92rem}
+.section{margin:0 0 42px;scroll-margin-top:25px}.section-heading{display:flex;align-items:flex-start;gap:14px;margin:0 0 18px}
+.section-number{display:inline-grid;place-items:center;flex:0 0 42px;height:42px;border:1px solid #c9dbe3;border-radius:12px;background:#e7f0f3;color:var(--teal);font-weight:700}
+h2{font-size:clamp(1.35rem,2.7vw,1.85rem);line-height:1.25;margin:0 0 4px;letter-spacing:-.025em}.section-heading p{color:var(--sub);margin:0;font-size:.95rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,295px),1fr));gap:15px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:22px;display:flex;flex-direction:column;min-height:240px;box-shadow:0 2px 9px #15364e09}
+.card:hover{border-color:#9fb9c4;box-shadow:0 5px 17px #15364e14}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--sub);font-size:.71rem;text-transform:uppercase;letter-spacing:.07em}
+.file-label{color:var(--teal)}h3{font-size:1.2rem;line-height:1.32;margin:15px 0 8px}h3 a{text-decoration:none}h3 a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.card p{font-size:.92rem;color:var(--sub);margin:0 0 17px;flex-grow:1}.visit{color:var(--teal);font-weight:700;text-decoration:none;font-size:.9rem;align-self:flex-start}.visit:hover{text-decoration:underline;text-underline-offset:4px}
+footer{border-top:1px solid var(--line);color:var(--sub);padding:24px 0 38px;font-size:.88rem}footer .container{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media (max-width:520px){header{padding-bottom:35px}.topline{padding-bottom:25px}.summary{gap:5px;flex-direction:column;align-items:flex-start}.container{width:min(1120px,calc(100% - 28px))}.card{min-height:0}}
+</style>
+</head>
+<body>
+<header><div class="container">
+<div class="topline"><span class="brand">INTERACTIVE ECONOMICS</span><a href="#topics">Explore all graphs ↓</a></div>
+<span class="eyebrow">Teaching and learning resources</span>
+<h1>Interactive Economics Graphs</h1>
+<p class="lead">Explore consumer choice, utility, budget constraints, indifference curves and labour–leisure decisions through interactive visualisations.</p>
+<nav class="quicknav" aria-label="Graph topics"><a href="#topic-1">Budget &amp; leisure</a><a href="#topic-2">Indifference curves</a><a href="#topic-3">Utility</a></nav>
+</div></header>
+<main id="topics" class="container">
+<div class="summary"><strong>9 interactive graphs</strong><span>Open any graph directly in your browser. No sign-in or software installation required.</span></div>
+<section class="section" id="topic-1">
+ <div class="section-heading"><span class="section-number">01</span><div><h2>Budget constraints and labour–leisure choice</h2><p>Explore feasible choices and how wage rates or prices change budget sets.</p></div></div>
+ <div class="cards"><article class="card">
+  <div class="card-top"><span class="subject">01 / 01</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/budget-function-grapher.html">Interactive Budget Function Grapher</a></h3>
+  <p>Plot a budget constraint from an equation, set axis ranges, and display bundles and the feasible set.</p>
+  <a class="visit" href="graphs/budget-function-grapher.html" aria-label="Open Interactive Budget Function Grapher">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">01 / 02</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/labour-leisure-budget-constraints.html">Labour–Leisure Budget Constraints</a></h3>
+  <p>Compare consumption and leisure before and after a wage increase, with selectable bundles.</p>
+  <a class="visit" href="graphs/labour-leisure-budget-constraints.html" aria-label="Open Labour–Leisure Budget Constraints">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">01 / 03</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/labour-leisure-budget-constraints-24hr.html">Labour–Leisure Budget Constraints · 24-Hour</a></h3>
+  <p>Explore wage changes and consumption–leisure bundles in a 24-hour setting.</p>
+  <a class="visit" href="graphs/labour-leisure-budget-constraints-24hr.html" aria-label="Open Labour–Leisure Budget Constraints · 24-Hour">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">01 / 04</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/labour-leisure-budget-constraints-24hr-indifference.html">Labour–Leisure with Indifference Curves · 24-Hour</a></h3>
+  <p>Combine budget lines, bundles and indifference curves to discuss labour–leisure choice.</p>
+  <a class="visit" href="graphs/labour-leisure-budget-constraints-24hr-indifference.html" aria-label="Open Labour–Leisure with Indifference Curves · 24-Hour">Open graph <span aria-hidden="true">↗</span></a>
+</article></div>
+</section>
+<section class="section" id="topic-2">
+ <div class="section-heading"><span class="section-number">02</span><div><h2>Indifference curves and consumer choice</h2><p>Construct preferences and investigate price, income and substitution effects.</p></div></div>
+ <div class="cards"><article class="card">
+  <div class="card-top"><span class="subject">02 / 01</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/construct-indifference-curves.html">Construct Indifference Curves</a></h3>
+  <p>Step through bundles on a reference indifference curve and explore the locations of selected bundles.</p>
+  <a class="visit" href="graphs/construct-indifference-curves.html" aria-label="Open Construct Indifference Curves">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">02 / 02</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/indifference-budget-graph.html">Indifference Curves and Budget Constraints</a></h3>
+  <p>Adjust independent budget lines, compare three convex indifference curves, and examine compensated choices.</p>
+  <a class="visit" href="graphs/indifference-budget-graph.html" aria-label="Open Indifference Curves and Budget Constraints">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">02 / 03</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/income-substitution-effect.html">Income and Substitution Effects</a></h3>
+  <p>Build the diagram step by step with up to two indifference curves, budget lines and a compensated constraint.</p>
+  <a class="visit" href="graphs/income-substitution-effect.html" aria-label="Open Income and Substitution Effects">Open graph <span aria-hidden="true">↗</span></a>
+</article></div>
+</section>
+<section class="section" id="topic-3">
+ <div class="section-heading"><span class="section-number">03</span><div><h2>Utility functions</h2><p>Visualise utility, marginal utility and consumer choice in two or three dimensions.</p></div></div>
+ <div class="cards"><article class="card">
+  <div class="card-top"><span class="subject">03 / 01</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/utility-marginal-utility.html">Utility and Marginal Utility</a></h3>
+  <p>Explore a utility function, its tangent and the corresponding marginal utility as quantity changes.</p>
+  <a class="visit" href="graphs/utility-marginal-utility.html" aria-label="Open Utility and Marginal Utility">Open graph <span aria-hidden="true">↗</span></a>
+</article>
+<article class="card">
+  <div class="card-top"><span class="subject">03 / 02</span><span class="file-label">Interactive graph</span></div>
+  <h3><a href="graphs/utility-constraint-indifference-3d.html">3D Utility Surface and Budget Constraint</a></h3>
+  <p>Rotate the 3D utility surface and manipulate the constraint plane, projected curves and optimum.</p>
+  <a class="visit" href="graphs/utility-constraint-indifference-3d.html" aria-label="Open 3D Utility Surface and Budget Constraint">Open graph <span aria-hidden="true">↗</span></a>
+</article></div>
+</section>
+</main>
+<footer><div class="container"><span>Interactive Economics Graphs · Learning resources</span><span>Use your browser’s Back button to return to this collection.</span></div></footer>
+</body></html>
