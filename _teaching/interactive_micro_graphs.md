@@ -4,6 +4,9 @@ title: "Interactive Microeconomics Graphs"
 permalink: /teaching/interactive_micro_graphs/
 author_profile: true
 excerpt: "Interactive visualisations of utility, budget constraints, indifference curves, and consumer choice for microeconomics teaching."
+type: "Interactive teaching resources"
+venue: "Online"
+date: 2026-10-14
 ---
 
 These interactive visualisations support the study of microeconomic theory through graphical exploration. Change parameters, compare curves and examine the implications of different constraints and preferences.
